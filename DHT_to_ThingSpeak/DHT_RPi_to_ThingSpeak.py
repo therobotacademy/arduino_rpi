@@ -34,8 +34,8 @@ while True:
         f.close
         sleep(myDelay)
     except:
-        print 'EXITING: not receiving data'
-        break
+        print 'NOT receiving data. I will try again'
+        # break
 
     
     
