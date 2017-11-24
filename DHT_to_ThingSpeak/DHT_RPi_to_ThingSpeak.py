@@ -18,9 +18,9 @@ print baseURL
 
 while True:
     try:
-        str=ser.readline()
-        print str
-        numbers_str = re.findall(r"[-+]?\d*\.\d+|\d+", str)
+        str_=ser.readline()
+        print str_
+        numbers_str = re.findall(r"[-+]?\d*\.\d+|\d+", str_)
         numbers = [float(s) for s in numbers_str]
 
         # Make sure the order is properly established

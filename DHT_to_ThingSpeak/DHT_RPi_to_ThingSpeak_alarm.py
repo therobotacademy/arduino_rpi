@@ -23,16 +23,16 @@ BASE_URL = 'https://api.thingspeak.com/apps/thingtweet/1/statuses/update/'
 KEY = '68LZC4LBMXLO6YDY'
 
 def send_notification(temp):
-    status = 'Temperatura de alarma =' + temp
+    status = 'Temperatura de alarma =' + str(temp)
     data = urllib.urlencode({'api_key' : KEY, 'status': status})
     response = urllib2.urlopen(url=BASE_URL, data=data)
     print(response.read())
 
 while True:
     try:
-        str=ser.readline()
-        print str
-        numbers_str = re.findall(r"[-+]?\d*\.\d+|\d+", str)
+        str_=ser.readline()
+        print str_
+        numbers_str = re.findall(r"[-+]?\d*\.\d+|\d+", str_)
         numbers = [float(s) for s in numbers_str]
 
         # Make sure the order is properly established
