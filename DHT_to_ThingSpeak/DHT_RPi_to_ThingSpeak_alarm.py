@@ -18,11 +18,11 @@ baseURL= 'https://api.thingspeak.com/update?api_key=%s' % myAPI
 print baseURL
 
 # ThingTweet setup
-MAX_TEMP = 20.0
+MAX_TEMP = 20.0 # Temperature limit. Above this value, notification is posted to Twitter
 BASE_URL = 'https://api.thingspeak.com/apps/thingtweet/1/statuses/update/'
-KEY = '68LZC4LBMXLO6YDY'
+KEY = '68LZC4LBMXLO6YDY' # This is the API key of your channel for posting to Twitter
 
-def send_notification(temp):
+def send_notification(temp): # Function that post a tweet when called from the main loop
     status = 'Temperatura de alarma =' + str(temp)
     data = urllib.urlencode({'api_key' : KEY, 'status': status})
     response = urllib2.urlopen(url=BASE_URL, data=data)
@@ -30,22 +30,22 @@ def send_notification(temp):
 
 while True:
     try:
-        str_=ser.readline()
+        str_=ser.readline() #Read a line from Arduino through the serial port
         print str_
-        numbers_str = re.findall(r"[-+]?\d*\.\d+|\d+", str_)
-        numbers = [float(s) for s in numbers_str]
+        numbers_str = re.findall(r"[-+]?\d*\.\d+|\d+", str_) # Extract the numeric values and remove the text
+        numbers = [float(s) for s in numbers_str] # Convert values (they are strings of characters) to float type numbers
 
         # Make sure the order is properly established
         humidity = numbers[0]
         temperature = numbers[1]
         # Send values to ThingSpeak
         f= urllib2.urlopen(baseURL + "&field1=%f&field2=%f" % (humidity,temperature))
-        print f.read()
+        print f.read() # This post the data to ThingSpeak
         print humidity , " " , temperature , " "
         print "-----"
-		if temperature > MAX_TEMP:
+		if temperature > MAX_TEMP:  # Condition on temperature, above which it is reported to Twitter channel
 				send_notification(temperature)
-        f.close
+        f.close # Close the connection to ThingSpeak
         sleep(myDelay)
     except:
         print 'NOT receiving data. I will try again'
